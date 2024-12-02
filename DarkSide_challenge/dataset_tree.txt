@@ -1,0 +1,14 @@
+training_data
+|-- smaple_1
+|   |-- seismicCubes_smaple_1.npy
+|   |-- faultSegments_smaple_1.npy
+|-- smaple_2
+|   |-- seismicCubes_smaple_2.npy
+|   |-- faultSegments_smaple_2.npy
+|-- smaple_3
+|   |-- seismicCubes_smaple_3.npy
+|   |-- faultSegments_smaple_3.npy
+|-- smaple_...
+|   |-- seismicCubes_smaple_....npy
+|   |-- faultSegments_smaple_....npy
+
