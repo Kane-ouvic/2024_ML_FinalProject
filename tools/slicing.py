@@ -45,7 +45,7 @@ def slice_xyz(input_path, output_path, direction):
             subfolder_path = os.path.join(output_path, 'y_slices', f'{sample_id}')
         elif direction == 'z':
             slices_seismic = [seismic_rescaled[..., i] for i in range(seismic_rescaled.shape[2])]
-            slices_fault = [fault[...: i] for i in range(fault.shape[2])]
+            slices_fault = [fault[..., i] for i in range(fault.shape[2])]
             subfolder_path = os.path.join(output_path, 'z_slices', f'{sample_id}')
 
         os.makedirs(subfolder_path, exist_ok=True)
