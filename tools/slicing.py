@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from utils import *
 import xarray as xr
 from PIL import Image
+import imageio
 
 def slice_xyz(input_path, output_path, direction):
     # path to your training data
@@ -14,7 +15,7 @@ def slice_xyz(input_path, output_path, direction):
         if os.path.isdir(path):
             sample_ids.append(name)
 
-    # sample_ids = sample_ids[:3] # Testing
+    sample_ids = sample_ids[:3] # Testing
 
     for i in range(len(sample_ids)):
         sample_id = sample_ids[i]
@@ -45,7 +46,7 @@ def slice_xyz(input_path, output_path, direction):
             subfolder_path = os.path.join(output_path, 'y_slices', f'{sample_id}')
         elif direction == 'z':
             slices_seismic = [seismic_rescaled[..., i] for i in range(seismic_rescaled.shape[2])]
-            slices_fault = [fault[..., i] for i in range(fault.shape[2])]
+            slices_fault = [fault[...: i] for i in range(fault.shape[2])]
             subfolder_path = os.path.join(output_path, 'z_slices', f'{sample_id}')
 
         os.makedirs(subfolder_path, exist_ok=True)
@@ -69,7 +70,53 @@ def slice_xyz(input_path, output_path, direction):
             img.save(f'{subfolder_path}/fault_{sample_id}_{direction}_{i}.png')
 
 
+def restore_masks(input_path, direction):
+    masks_ret = []
+    dir_path = os.path.join(os.getcwd(), input_path, f'{direction}_slices')
+    sample_ids = []
+    for name in os.listdir(dir_path):
+        path = os.path.join(dir_path, name)
+        if os.path.isdir(path):
+            sample_ids.append(name)
+    sorted(sample_ids)
+    for i in range(len(sample_ids)):
+        sample_id = sample_ids[i]
+        sample_path = os.path.join(dir_path, sample_id)
+        files = os.listdir(sample_path)
+        results = []
+        for file in files:
+            if file.startswith('fault'):
+                results.append(os.path.join(sample_path, file))
+
+        def extract_index(filename):
+            base_name = os.path.splitext(filename)[0]
+            number_part = base_name.split('_')[-1]
+            return int(number_part) if number_part.isdigit() else float('inf')
+        
+        sorted_files = sorted(results, key=extract_index)
+        masks = [imageio.v2.imread(os.path.join(sample_path, file)) for file in sorted_files]
+        if direction == 'x':
+            axis = 0
+        elif direction == 'y':
+            axis = 1
+        elif direction == 'z':
+            axis = 2
+        reconstructed = np.stack(masks, axis=axis)
+        # print(sample_path)
+        # ori = np.load('training_data\\2023-10-05_0283ecc5\\fault_segments_2023.76163530.npy')
+        # print(reconstructed.dtype)
+        # print(ori.dtype)
+        # print((reconstructed == ori).all())
+        masks_ret.append(reconstructed)
+    return reconstructed
+    
+
 '''
 Given input and output directory path and a desire slicing direction
 '''
 slice_xyz("training_data", 'output', 'x')
+
+'''
+Test reconstruction here
+'''
+restore_masks('output', 'x')
