@@ -4,6 +4,7 @@ import torch
 import torch.nn.functional as F
 from torchsummary import summary
 import timm
+from config import Config
 
 
 class SimpleUNet(nn.Module):
@@ -27,7 +28,7 @@ class SimpleUNet(nn.Module):
     def forward(self, x):
         x = self.encoder(x)
         x = self.decoder(x)
-        x = nn.functional.interpolate(x, size=(600, 800), mode="bilinear", align_corners=False)
+        x = nn.functional.interpolate(x, size=(Config.ORGIN_IMAGE_SIZE), mode="bilinear", align_corners=False)
         return x
     
 
@@ -55,7 +56,7 @@ class UNet_2048(nn.Module):
     def forward(self, x):
         x = self.encoder(x)
         x = self.decoder(x)
-        x = nn.functional.interpolate(x, size=(600, 800), mode="bilinear", align_corners=False)
+        x = nn.functional.interpolate(x, size=(Config.ORGIN_IMAGE_SIZE), mode="bilinear", align_corners=False)
         return x
 
 
@@ -84,5 +85,5 @@ class UNet_2048_2(nn.Module):
     def forward(self, x):
         x = self.encoder(x)
         x = self.decoder(x)
-        x = nn.functional.interpolate(x, size=(600, 800), mode="bilinear", align_corners=False)
+        x = nn.functional.interpolate(x, size=(Config.ORGIN_IMAGE_SIZE), mode="bilinear", align_corners=False)
         return x
