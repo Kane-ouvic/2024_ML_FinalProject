@@ -8,6 +8,7 @@ from utils import CombinedLoss, CombinedLoss2
 from Unet import SimpleUNet, UNet_2048, UNet_2048_2 
 from UnetPlusPlus import UNetPlusPlus, UNetPlusPlus2
 from UnetPlusPlusImproved import UNetPlusPlusImproved
+from Baseline_Unet import *
 from train import train_model, inference
 from random import seed
 import segmentation_models_pytorch as smp
@@ -59,7 +60,8 @@ if __name__ == "__main__":
         model = UNetPlusPlus(num_classes=Config.NUM_CLASSES, encoder_name=Config.ENCODER_NAME).to(device)
     elif Config.MODEL_NAME == "UNetPlusPlusImproved":
         model = UNetPlusPlusImproved(num_classes=Config.NUM_CLASSES, encoder_name=Config.ENCODER_NAME).to(device)
-
+    elif Config.MODEL_NAME == "UNetBaseline":
+        model = UNetBaseline(input_channels=3, output_channels=Config.NUM_CLASSES).to(device)
     
     
     criterion = CombinedLoss2(weight=Config.LOSS_WEIGHT)
