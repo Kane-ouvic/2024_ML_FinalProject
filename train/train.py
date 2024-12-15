@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 import pydensecrf.densecrf as dcrf
 from pydensecrf.utils import unary_from_softmax, create_pairwise_gaussian, create_pairwise_bilateral
+from config import *
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -64,11 +65,11 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
         val_iou_history.append(epoch_val_iou)
         
         if (epoch + 1) % 10 == 0:
-            torch.save(model.state_dict(), f"./pth/UnetPlusPlus_64x4d_1211_x_{epoch+1}.pth")
+            torch.save(model.state_dict(), Config.SAVE_PATH + f'_{epoch+1}.pt')
 
         print(f"Epoch [{epoch+1}/{num_epochs}], Train Loss: {epoch_train_loss}, Val Loss: {epoch_val_loss}, Train IoU: {epoch_train_iou}, Val IoU: {epoch_val_iou}")
 
-    torch.save(model.state_dict(), "./pth/UnetPlusPlus_64x4d_1211_x.pth")
+    torch.save(model.state_dict(), Config.SAVE_PATH)
     print("Model weights saved")
 
     # plot Training and Validation Loss

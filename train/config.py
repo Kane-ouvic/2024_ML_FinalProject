@@ -27,6 +27,6 @@ class Config:
     # 模型配置
     MODEL_NAME = "UNetBaseline"
     ENCODER_NAME = "resnext101_64x4d"
-    SAVE_PATH = MODEL_NAME + "_" + ENCODER_NAME + ".pt" if MODEL_NAME != 'UNetBaseline' else MODEL_NAME
+    SAVE_PATH = MODEL_NAME + "_" + ENCODER_NAME + ".pt" if MODEL_NAME != 'UNetBaseline' else MODEL_NAME + ".pt"
     # 損失函數配置
     LOSS_WEIGHT = 0.5
