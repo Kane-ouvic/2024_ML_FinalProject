@@ -2,6 +2,8 @@
 
 This is a project for the ML course.
 
+[Contest URL](https://thinkonward.com/app/c/challenges/dark-side)
+
 ## Requirements
 
 ```
@@ -26,16 +28,16 @@ This project focuses on enhancing fault detection in ultra-shallow seismic data 
 ### Key Approaches
 
 1. **Data Augmentation**:
-
+   
    - **Short-Time Fourier Transform (STFT)**: Removes high-frequency noise in seismic data but introduces additional noise due to discrete processing.
    - **Fast Fourier Transform (FFT)**: Filters high-frequency components in images to reduce noise, with reconstruction using Inverse FFT.
    - **Sobel Filter**: Highlights edges in seismic images for fault detection but is sensitive to noise and requires careful parameter tuning.
 2. **Data Preprocessing**:
-
+   
    - Sliced 3D seismic data into 2D images along the X, Y, and Z axes using a helper function (`slicing_xyz`).
    - Filtered out images without faults to reduce unnecessary data.
 3. **Model Architectures**:
-
+   
    - **Baseline Model**: Utilized a U-Net with contracting and expanding blocks.
    - **Simple U-Net**: Modified ResNet-18 as the encoder backbone.
    - **Attention U-Net**: Added spatial and channel-wise squeeze-and-excitation (scSE) modules to enhance feature focus.
@@ -43,11 +45,10 @@ This project focuses on enhancing fault detection in ultra-shallow seismic data 
      - Dense skip connections for feature reuse.
      - Incorporated Squeeze-and-Excitation (SE) blocks and replaced transposed convolutions with bilinear interpolation for improved segmentation.
 4. **Ensemble Learning**:
-
+   
    - Combined predictions from X, Y, and Z slices using intersection, union, or voting methods to leverage model strengths.
 
 ### Experimental Results
-
 
 | Model           | Augmentation | Direction | Dice Score (Test) |
 | --------------- | ------------ | --------- | ----------------- |
@@ -82,3 +83,4 @@ This project focuses on enhancing fault detection in ultra-shallow seismic data 
    ```bash
    git clone https://github.com/Kane-ouvic/2024_ML_FinalProject.git
    ```
+
